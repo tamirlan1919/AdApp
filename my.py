@@ -77,6 +77,7 @@ class AdvertisementPlayer(QMainWindow):
         self.video_widget = None
         self.video_playing = False
         self.video_stopped = False  # Добавлено флаг для отслеживания окончания видео
+        self.auto_change_interval = 0  # Добавьте переменную для хранения интервала автоматической смены
 
         # Show the first media
         self.show_media(self.current_media_index)
@@ -166,7 +167,8 @@ class AdvertisementPlayer(QMainWindow):
     def start_media_change(self):
         # Start changing media automatically based on the selected interval
         interval = int(self.interval_edit.text())
-        
+        self.auto_change_interval = interval  # Сохраните интервал
+
         if not self.video_playing:  # Only start the timer if video is not playing
             self.media_timer.start(interval * 1000)  # Convert to milliseconds
             # После запуска таймера, вы можете добавить вызов функции для скачивания файлов
@@ -181,22 +183,32 @@ class AdvertisementPlayer(QMainWindow):
         self.media_timer.stop()
 
         
+
     def media_player_state_changed(self, state):
         # Handler for mediaPlayerStateChanged signal
         if state == QMediaPlayer.StoppedState:
             # Video playback has stopped
             if not self.video_stopped:
                 # Если видео не было воспроизведено до конца, переключиться на следующий медиафайл
+                self.video_playing = False  # Устанавливаем флаг video_playing в False
+                interval = self.auto_change_interval
+                self.media_timer.start(interval * 1000)
                 self.show_next_media()
             else:
                 # Если видео было воспроизведено до конца, начать таймер для следующего медиафайла
-                interval = int(self.interval_edit.text())
+                self.video_playing = False  # Устанавливаем флаг video_playing в False
+                interval = self.auto_change_interval
                 self.media_timer.start(interval * 1000)
-        elif state == QMediaPlayer.EndOfMedia:
-            # Video playback has reached the end
-            self.video_stopped = True
-            # Здесь добавляем код для переключения на следующий медиафайл
-            self.show_next_media()
+  
+        elif state == QMediaPlayer.PlayingState:
+            # Video playback has started, stop the interval timer
+            self.media_timer.stop()
+            self.video_playing = True  # Устанавливаем флаг video_playing в True
+        elif state == QMediaPlayer.PausedState:  # Добавьте обработку состояния паузы
+            # Если видео было приостановлено пользователем, начать таймер
+            self.media_timer.start(self.auto_change_interval * 1000)
+
+
             
     def download_all_files_from_folder(self, yandex_disk_folder, save_folder):
         try:
