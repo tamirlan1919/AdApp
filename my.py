@@ -276,10 +276,10 @@ class AdvertisementPlayer(QMainWindow):
         current_time = QDateTime.currentDateTime()
         time_difference = self.last_playback_time.secsTo(current_time)
 
-        if time_difference > 5 and not self.video_playing:  # 300 секунд = 5 минут
+        if time_difference > 1800 and not self.video_playing:  # 300 секунд = 5 минут
             # Если время безуспешного воспроизведения превышает 5 минут, отправьте уведомление в Telegram
             chat_id = '5455171373'  # Замените на ID вашего чата или пользователя
-            message = 'Воспроизведение не работает в течение более 5 минут на компьютере.'
+            message = 'Воспроизведение не работает в течение более 30 минут на компьютере.'
             self.send_telegram_notification(chat_id, message)
 
     def set_interval(self, interval):
@@ -303,8 +303,13 @@ class AdvertisementPlayer(QMainWindow):
 
     def stop_playback(self):
             # Функция для остановки воспроизведения через Telegram бота
+    # Функция для остановки воспроизведения через Telegram бота
         self.playing = False
         self.media_timer.stop()
+
+        # Добавьте следующие строки для остановки видео (если оно воспроизводится):
+        if self.media_player and self.media_player.state() == QMediaPlayer.PlayingState:
+            self.media_player.stop()
 
 
 def run_bot_thread():
