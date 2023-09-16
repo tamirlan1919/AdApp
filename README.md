@@ -28,3 +28,8 @@
 
 ```bash
 python my.py
+```
+#  Чтобы преоброзовать в exe?
+```bash
+pyinstaller --onefile my.py
+
