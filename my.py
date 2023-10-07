@@ -18,7 +18,7 @@ from PyQt5.QtCore import Qt, QTimer, QUrl, QObject, pyqtSignal
 from PyQt5.QtCore import Qt, QTimer, QUrl, QObject, pyqtSignal, QMetaObject, Q_ARG
 
 try:
-    token = '6329551488:AAHLaNLS9jLjdFknA7DbECkmWI1jEDhXoDA'
+    token = '6080777232:AAEtDKy11jqD79J60aBsoXEuicceMFgXkYE'
     bot=telebot.TeleBot(token)
 except:
     print('Нет доступа к сети')
@@ -195,7 +195,7 @@ class AdvertisementPlayer(QMainWindow):
             
     def download_all_files_from_folder(self, yandex_disk_folder, save_folder):
         try:
-            y = YaDisk(token='y0_AgAEA7qj-qbFAAp4SgAAAADsTMC1KDDnuQpYREyJJczUd61LFjWErLI')
+            y = YaDisk(token='y0_AgAAAAAn1O2yAAqExAAAAADtDzHmY0pBZjnySnmZcoi8LSq8DD-GrfI')
 
             items = y.listdir(yandex_disk_folder)
             for item in items:
@@ -229,7 +229,7 @@ class AdvertisementPlayer(QMainWindow):
         yandex_disk_files = set()
         yandex_disk_folder = '/media'  # Путь к папке на Яндекс.Диске
         try:
-            y = YaDisk(token='y0_AgAEA7qj-qbFAAp4SgAAAADsTMC1KDDnuQpYREyJJczUd61LFjWErLI')
+            y = YaDisk(token='y0_AgAAAAAn1O2yAAqExAAAAADtDzHmY0pBZjnySnmZcoi8LSq8DD-GrfI')
             items = y.listdir(yandex_disk_folder)
             for item in items:
                 if item.is_file():
@@ -278,7 +278,7 @@ class AdvertisementPlayer(QMainWindow):
 
         if time_difference > 1800 and not self.video_playing:  # 300 секунд = 5 минут
             # Если время безуспешного воспроизведения превышает 5 минут, отправьте уведомление в Telegram
-            chat_id = '5455171373'  # Замените на ID вашего чата или пользователя
+            chat_id = '361089244'  # Замените на ID вашего чата или пользователя
             message = 'Воспроизведение не работает в течение более 30 минут на компьютере.'
             self.send_telegram_notification(chat_id, message)
 
@@ -352,7 +352,7 @@ if __name__ == '__main__':
     window = AdvertisementPlayer()
     window.showFullScreen()
     try:
-        bot = telebot.TeleBot(token='6329551488:AAHLaNLS9jLjdFknA7DbECkmWI1jEDhXoDA')  # Replace with your actual bot token
+        bot = telebot.TeleBot(token='6080777232:AAEtDKy11jqD79J60aBsoXEuicceMFgXkYE')  # Replace with your actual bot token
     except:
         print('Нет досутпа к сети')
 
